@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:thread_clone/providers/user_provider.dart';
 import 'package:thread_clone/utils/constants.dart';
 
 class ResponsiveLayout extends StatefulWidget {
@@ -15,6 +17,18 @@ class ResponsiveLayout extends StatefulWidget {
 }
 
 class _ResponsiveLayoutState extends State<ResponsiveLayout> {
+  addStates() async {
+    //add the states
+    UserProvider userProvider = Provider.of(context, listen: false);
+    await userProvider.refreshUser();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    addStates();
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(

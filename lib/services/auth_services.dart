@@ -7,6 +7,14 @@ import 'package:thread_clone/services/storage_services.dart';
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Future<UserModel> getCurrentUser() async {
+    User currentUser = _auth.currentUser!;
+    DocumentSnapshot snapshot =
+        await _firestore.collection('users').doc(currentUser.uid).get();
+
+    return UserModel.fromJSON(snapshot.data() as Map<String, dynamic>);
+  }
+
   //register new user
   Future<String> registerWithEmailAndPassword({
     required String email,
@@ -105,5 +113,9 @@ class AuthMethods {
     }
 
     return res;
+  }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 }
